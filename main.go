@@ -220,9 +220,9 @@ func main() {
 	// Create a graph object with the 1st order derivative points on it
 	graphLabeled = false
 	for x := -2.1; x <= 2.2; x += pointStep {
-		p = Point{X: x, Y: 2 * (x * x)} // y = 2x^2
+		p = Point{X: x, Y: 3 * (x * x)} // y = 3x^2
 		if !graphLabeled {
-			p.Label = " 1st order derivative: y = 2x² "
+			p.Label = " 1st order derivative: y = 3x² "
 			p.LabelAlign = "right"
 			graphLabeled = true
 		}
@@ -634,7 +634,7 @@ func renderFrame(args []js.Value) {
 	ctx.Call("fillText", "1st order derivative", graphWidth+20, textY)
 	textY += 20
 	ctx.Set("font", "16px sans-serif")
-	ctx.Call("fillText", "y = 2x²", graphWidth+40, textY)
+	ctx.Call("fillText", "y = 3x²", graphWidth+40, textY)
 
 	// Clear the source code link area
 	ctx.Set("fillStyle", "white")
