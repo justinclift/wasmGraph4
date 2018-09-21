@@ -549,7 +549,7 @@ func renderFrame(args []js.Value) {
 
 		// Draw any point labels
 		ctx.Set("fillStyle", "black")
-		ctx.Set("font", "bold 14px serif")
+		ctx.Set("font", "bold 16px serif")
 		var px, py float64
 		for _, l := range o.P {
 			if l.Label != "" {
@@ -622,18 +622,18 @@ func renderFrame(args []js.Value) {
 	// Add the graph and derivatives information
 	// TODO: Put the equation into a structure or string (TBD), and have everything automatically derived from that
 	ctx.Set("fillStyle", "black")
-	ctx.Set("font", "bold 14px serif")
+	ctx.Set("font", "bold 18px serif")
 	ctx.Call("fillText", "Equation", graphWidth+20, textY)
 	textY += 20
-	ctx.Set("font", "12px sans-serif")
+	ctx.Set("font", "16px sans-serif")
 	ctx.Call("fillText", "y = x³", graphWidth+40, textY)
 	textY += 30
 
 	// Add the derivatives information
-	ctx.Set("font", "bold 14px serif")
+	ctx.Set("font", "bold 18px serif")
 	ctx.Call("fillText", "1st order derivative", graphWidth+20, textY)
 	textY += 20
-	ctx.Set("font", "12px sans-serif")
+	ctx.Set("font", "16px sans-serif")
 	ctx.Call("fillText", "y = 2x²", graphWidth+40, textY)
 
 	// Clear the source code link area
