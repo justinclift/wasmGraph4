@@ -5,7 +5,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"sort"
 	"syscall/js"
 	"time"
 
@@ -49,29 +48,6 @@ type Operation struct {
 	X  float64
 	Y  float64
 	Z  float64
-}
-
-type drawOrder struct {
-	order    int // Draw order for an object
-	spaceNum int // Index of the object in the worldSpace slice
-}
-
-type drawOrderSlice []drawOrder
-
-func (o drawOrder) String() string {
-	return fmt.Sprintf("Object: %v, Order: %v", o.spaceNum, o.order)
-}
-
-func (o drawOrderSlice) Len() int {
-	return len(o)
-}
-
-func (o drawOrderSlice) Swap(i, j int) {
-	o[i], o[j] = o[j], o[i]
-}
-
-func (o drawOrderSlice) Less(i, j int) bool {
-	return o[i].order < o[j].order
 }
 
 const (
@@ -148,7 +124,6 @@ var (
 	opText              string
 	highLightSource     bool
 	pointStep           = 0.05
-	order               drawOrderSlice
 	debug               = false // If true, some debugging info is printed to the javascript console
 )
 
@@ -234,12 +209,6 @@ func main() {
 	worldSpace = append(worldSpace, importObject(firstDeriv, 0.0, 0.0, 0.0))
 
 	// TODO: Generate points for the 2nd order derivative?
-
-	// Sort the objects by draw order - this stops flickering of objects at same depth overwriting each other when drawn
-	for i, j := range worldSpace {
-		order = append(order, drawOrder{spaceNum: i, order: j.DrawOrder})
-	}
-	sort.Sort(drawOrderSlice(order))
 
 	// Keep the application running
 	done := make(chan struct{}, 0)
@@ -567,7 +536,7 @@ func renderFrame(args []js.Value) {
 	var px, py float64
 	numWld := len(worldSpace)
 	for i := 0; i < numWld; i++ {
-		o := worldSpace[order[i].spaceNum]
+		o := worldSpace[i]
 		if o.Name != "axes" {
 			// Draw lines between the points
 			ctx.Set("strokeStyle", o.C)
